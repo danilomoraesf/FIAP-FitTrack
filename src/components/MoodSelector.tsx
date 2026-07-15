@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { MoodLevel } from '../models/DailyRecord';
 import { colors } from '../theme/colors';
-import { radius, spacing } from '../theme/spacing';
+import { radius } from '../theme/spacing';
 
 interface MoodOption {
   level: MoodLevel;

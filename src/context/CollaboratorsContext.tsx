@@ -30,7 +30,7 @@ export function CollaboratorsProvider({ children }: { children: ReactNode }) {
           payload: { collaborators: snapshot.collaborators, activeCollaboratorId: snapshot.activeCollaboratorId },
         })
       )
-      .catch((e) => dispatch({ type: 'HYDRATE_ERROR', payload: String(e) }));
+      .catch(() => {});
   }, []);
 
   useEffect(() => {

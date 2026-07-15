@@ -3,20 +3,15 @@ import { DailyRecord } from '../models/DailyRecord';
 
 export interface RecordsState {
   records: Record<string, DailyRecord>;
-  isLoading: boolean;
-  error: string | null;
 }
 
 export type RecordsAction =
   | { type: 'HYDRATE'; payload: DailyRecord[] }
-  | { type: 'HYDRATE_ERROR'; payload: string }
   | { type: 'UPSERT_RECORD'; payload: DailyRecord }
   | { type: 'DELETE_RECORD'; payload: { collaboratorId: string; date: string } };
 
 export const initialRecordsState: RecordsState = {
   records: {},
-  isLoading: true,
-  error: null,
 };
 
 export function recordsReducer(state: RecordsState, action: RecordsAction): RecordsState {
@@ -26,10 +21,8 @@ export function recordsReducer(state: RecordsState, action: RecordsAction): Reco
       for (const record of action.payload) {
         records[makeRecordKey(record.collaboratorId, record.date)] = record;
       }
-      return { ...state, records, isLoading: false, error: null };
+      return { ...state, records };
     }
-    case 'HYDRATE_ERROR':
-      return { ...state, isLoading: false, error: action.payload };
     case 'UPSERT_RECORD': {
       const key = makeRecordKey(action.payload.collaboratorId, action.payload.date);
       return {

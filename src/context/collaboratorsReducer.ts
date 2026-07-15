@@ -4,13 +4,10 @@ import { resolveActiveAfterDelete, resolveActiveAfterHydrate } from '../domain/c
 export interface CollaboratorsState {
   collaborators: Collaborator[];
   activeCollaboratorId: string | null;
-  isLoading: boolean;
-  error: string | null;
 }
 
 export type CollaboratorsAction =
   | { type: 'HYDRATE'; payload: { collaborators: Collaborator[]; activeCollaboratorId: string | null } }
-  | { type: 'HYDRATE_ERROR'; payload: string }
   | { type: 'ADD_COLLABORATOR'; payload: Collaborator }
   | { type: 'UPDATE_COLLABORATOR'; payload: Collaborator }
   | { type: 'DELETE_COLLABORATOR'; payload: { id: string } }
@@ -19,8 +16,6 @@ export type CollaboratorsAction =
 export const initialCollaboratorsState: CollaboratorsState = {
   collaborators: [],
   activeCollaboratorId: null,
-  isLoading: true,
-  error: null,
 };
 
 export function collaboratorsReducer(
@@ -37,12 +32,8 @@ export function collaboratorsReducer(
         ...state,
         collaborators: action.payload.collaborators,
         activeCollaboratorId,
-        isLoading: false,
-        error: null,
       };
     }
-    case 'HYDRATE_ERROR':
-      return { ...state, isLoading: false, error: action.payload };
     case 'ADD_COLLABORATOR': {
       const collaborators = [...state.collaborators, action.payload];
       const activeCollaboratorId = state.activeCollaboratorId ?? action.payload.id;

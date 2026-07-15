@@ -19,7 +19,7 @@ export function RecordsProvider({ children }: { children: ReactNode }) {
     recordsRepository
       .loadRecords()
       .then((records) => dispatch({ type: 'HYDRATE', payload: records }))
-      .catch((e) => dispatch({ type: 'HYDRATE_ERROR', payload: String(e) }));
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
