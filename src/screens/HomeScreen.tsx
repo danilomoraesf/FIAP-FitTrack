@@ -25,6 +25,11 @@ export function HomeScreen({ navigation }: Props) {
   if (collaboratorsState.activeCollaboratorId === null) {
     return (
       <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+        <View style={styles.titleWrapper}>
+          <Text style={styles.title} accessibilityRole="header">
+            FitTrack
+          </Text>
+        </View>
         <NoActiveCollaboratorState onNavigateToEquipe={() => navigation.navigate('Equipe')} />
       </SafeAreaView>
     );
@@ -35,11 +40,12 @@ export function HomeScreen({ navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
-      <ScrollView contentContainerStyle={styles.content}>
+      <View style={styles.titleWrapper}>
         <Text style={styles.title} accessibilityRole="header">
           FitTrack
         </Text>
-
+      </View>
+      <ScrollView contentContainerStyle={styles.content}>
         <CollaboratorPicker
           collaborators={sortCollaboratorsByName(collaboratorsState.collaborators)}
           activeCollaboratorId={activeCollaboratorId}
@@ -78,6 +84,10 @@ const styles = StyleSheet.create({
   content: {
     padding: spacing.md,
     gap: spacing.md,
+  },
+  titleWrapper: {
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.md,
   },
   title: {
     fontSize: 28,
