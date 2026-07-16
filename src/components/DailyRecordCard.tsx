@@ -21,11 +21,11 @@ export function DailyRecordCard({ record, onPress, onDelete }: DailyRecordCardPr
   const goalsMetCount = countGoalsMet(record);
   const cardLabel = `Registro de ${formatDisplayDate(record.date)}, ${goalsMetCount} de 3 metas atingidas`;
 
-  const content = (
-    <Card style={goalMet ? styles.highlighted : undefined}>
+  const body = (
+    <>
       <View style={styles.header}>
         <Text style={styles.date}>{formatDisplayDate(record.date)}</Text>
-        <View style={styles.headerRight}>
+        <View style={onDelete ? [styles.headerRight, styles.headerRightWithDelete] : styles.headerRight}>
           {goalMet ? (
             <View style={styles.badge}>
               <Text style={styles.badgeText}>Metas batidas ✓</Text>
@@ -33,17 +33,6 @@ export function DailyRecordCard({ record, onPress, onDelete }: DailyRecordCardPr
           ) : (
             <Text style={styles.goalsCount}>{goalsMetCount}/3 metas</Text>
           )}
-          {onDelete ? (
-            <Pressable
-              onPress={onDelete}
-              accessibilityRole="button"
-              accessibilityLabel={`Excluir registro de ${formatDisplayDate(record.date)}`}
-              hitSlop={8}
-              style={styles.deleteButton}
-            >
-              <Ionicons name="trash-outline" size={18} color={colors.danger} />
-            </Pressable>
-          ) : null}
         </View>
       </View>
 
@@ -71,17 +60,30 @@ export function DailyRecordCard({ record, onPress, onDelete }: DailyRecordCardPr
           }
         />
       </View>
-    </Card>
+    </>
   );
 
-  if (!onPress) {
-    return content;
-  }
-
   return (
-    <Pressable onPress={onPress} accessibilityRole="button" accessibilityLabel={cardLabel}>
-      {content}
-    </Pressable>
+    <Card style={goalMet ? styles.highlighted : undefined}>
+      {onDelete ? (
+        <Pressable
+          onPress={onDelete}
+          accessibilityRole="button"
+          accessibilityLabel={`Excluir registro de ${formatDisplayDate(record.date)}`}
+          hitSlop={8}
+          style={styles.deleteButton}
+        >
+          <Ionicons name="trash-outline" size={18} color={colors.danger} />
+        </Pressable>
+      ) : null}
+      {onPress ? (
+        <Pressable onPress={onPress} accessibilityRole="button" accessibilityLabel={cardLabel}>
+          {body}
+        </Pressable>
+      ) : (
+        body
+      )}
+    </Card>
   );
 }
 
@@ -97,8 +99,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.sm,
   },
+  headerRightWithDelete: {
+    marginRight: spacing.xl,
+  },
   deleteButton: {
+    position: 'absolute',
+    top: spacing.md,
+    right: spacing.md,
     padding: spacing.xs / 2,
+    zIndex: 1,
   },
   date: {
     fontSize: 16,

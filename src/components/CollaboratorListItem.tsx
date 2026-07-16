@@ -15,35 +15,34 @@ interface CollaboratorListItemProps {
 
 export function CollaboratorListItem({ collaborator, isActive, onPress, onDelete }: CollaboratorListItemProps) {
   return (
-    <Pressable
-      onPress={onPress}
-      accessibilityRole="button"
-      accessibilityLabel={`Editar colaborador ${collaborator.name}${isActive ? ', ativo no momento' : ''}`}
-      accessibilityState={{ selected: isActive }}
-    >
-      <Card style={styles.row}>
-        <View style={styles.info}>
-          <View style={styles.nameRow}>
-            <Text style={styles.name}>{collaborator.name}</Text>
-            {isActive ? (
-              <View style={styles.badge}>
-                <Text style={styles.badgeText}>Ativo</Text>
-              </View>
-            ) : null}
-          </View>
-          {collaborator.role ? <Text style={styles.role}>{collaborator.role}</Text> : null}
+    <Card style={styles.row}>
+      <Pressable
+        onPress={onPress}
+        accessibilityRole="button"
+        accessibilityLabel={`Editar colaborador ${collaborator.name}${isActive ? ', ativo no momento' : ''}`}
+        accessibilityState={{ selected: isActive }}
+        style={styles.info}
+      >
+        <View style={styles.nameRow}>
+          <Text style={styles.name}>{collaborator.name}</Text>
+          {isActive ? (
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>Ativo</Text>
+            </View>
+          ) : null}
         </View>
-        <Pressable
-          onPress={onDelete}
-          accessibilityRole="button"
-          accessibilityLabel={`Excluir colaborador ${collaborator.name}`}
-          hitSlop={8}
-          style={styles.deleteButton}
-        >
-          <Ionicons name="trash-outline" size={20} color={colors.danger} />
-        </Pressable>
-      </Card>
-    </Pressable>
+        {collaborator.role ? <Text style={styles.role}>{collaborator.role}</Text> : null}
+      </Pressable>
+      <Pressable
+        onPress={onDelete}
+        accessibilityRole="button"
+        accessibilityLabel={`Excluir colaborador ${collaborator.name}`}
+        hitSlop={8}
+        style={styles.deleteButton}
+      >
+        <Ionicons name="trash-outline" size={20} color={colors.danger} />
+      </Pressable>
+    </Card>
   );
 }
 
