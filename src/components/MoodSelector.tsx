@@ -11,7 +11,7 @@ interface MoodOption {
 }
 
 const MOOD_OPTIONS: MoodOption[] = [
-  { level: 1, emoji: '🫠', label: 'Muito ruim' },
+  { level: 1, emoji: '😩', label: 'Muito ruim' },
   { level: 2, emoji: '😕', label: 'Ruim' },
   { level: 3, emoji: '😶', label: 'Neutro' },
   { level: 4, emoji: '🙂', label: 'Bom' },
