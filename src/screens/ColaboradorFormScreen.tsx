@@ -1,10 +1,11 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CustomButton } from '../components/CustomButton';
 import { FormSection } from '../components/FormSection';
 import { LabeledTextInput } from '../components/LabeledTextInput';
+import { useAlert } from '../context/AlertContext';
 import { useCollaborators } from '../context/useCollaborators';
 import {
   CollaboratorFormValues,
@@ -22,6 +23,7 @@ type Props = NativeStackScreenProps<EquipeStackParamList, 'ColaboradorForm'>;
 const EMPTY_FORM: CollaboratorFormValues = { name: '', role: '' };
 
 export function ColaboradorFormScreen({ route, navigation }: Props) {
+  const { alert } = useAlert();
   const { state, addCollaborator, updateCollaborator } = useCollaborators();
   const collaboratorId = route.params?.collaboratorId;
   const existing = collaboratorId ? state.collaborators.find((c) => c.id === collaboratorId) : undefined;
@@ -64,9 +66,7 @@ export function ColaboradorFormScreen({ route, navigation }: Props) {
       addCollaborator(created);
     }
 
-    Alert.alert('Pronto', `${values.name.trim()} foi salvo.`, [
-      { text: 'OK', onPress: () => navigation.goBack() },
-    ]);
+    alert('Pronto', `${values.name.trim()} foi salvo.`, () => navigation.goBack());
   }
 
   return (

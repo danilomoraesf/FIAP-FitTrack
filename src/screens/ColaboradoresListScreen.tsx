@@ -4,25 +4,27 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CollaboratorListItem } from '../components/CollaboratorListItem';
 import { CustomButton } from '../components/CustomButton';
+import { useAlert } from '../context/AlertContext';
 import { useCollaborators } from '../context/useCollaborators';
 import { sortCollaboratorsByName } from '../domain/collaborators';
 import { Collaborator } from '../models/Collaborator';
 import { EquipeStackParamList } from '../navigation/types';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
-import { confirmDestructiveAction } from '../utils/confirm';
 
 type Props = NativeStackScreenProps<EquipeStackParamList, 'ColaboradoresList'>;
 
 export function ColaboradoresListScreen({ navigation }: Props) {
+  const { confirm } = useAlert();
   const { state, deleteCollaborator } = useCollaborators();
   const collaborators = sortCollaboratorsByName(state.collaborators);
 
   function confirmDelete(collaborator: Collaborator) {
-    confirmDestructiveAction(
+    confirm(
       'Excluir colaborador',
       `Tem certeza que deseja excluir ${collaborator.name}? Os registros já salvos para este colaborador não serão apagados.`,
-      () => deleteCollaborator(collaborator.id)
+      () => deleteCollaborator(collaborator.id),
+      'Excluir'
     );
   }
 
