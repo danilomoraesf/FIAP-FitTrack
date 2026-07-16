@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { DailyRecordCard } from '../components/DailyRecordCard';
 import { NoActiveCollaboratorState } from '../components/NoActiveCollaboratorState';
+import { useAlert } from '../context/AlertContext';
 import { useCollaborators } from '../context/useCollaborators';
 import { useRecords } from '../context/useRecords';
 import { getRecordsForCollaborator, makeRecordKey, sortRecordsDescending } from '../domain/records';
@@ -11,12 +12,12 @@ import { DailyRecord } from '../models/DailyRecord';
 import { RootTabParamList } from '../navigation/types';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
-import { confirmDestructiveAction } from '../utils/confirm';
 import { formatDisplayDate } from '../utils/date';
 
 type Props = BottomTabScreenProps<RootTabParamList, 'Historico'>;
 
 export function HistoryScreen({ navigation }: Props) {
+  const { confirm } = useAlert();
   const { state, deleteRecord } = useRecords();
   const { state: collaboratorsState } = useCollaborators();
 
@@ -32,10 +33,11 @@ export function HistoryScreen({ navigation }: Props) {
   const records = sortRecordsDescending(getRecordsForCollaborator(state.records, activeCollaboratorId));
 
   function confirmDelete(record: DailyRecord) {
-    confirmDestructiveAction(
+    confirm(
       'Excluir registro',
       `Tem certeza que deseja excluir o registro de ${formatDisplayDate(record.date)}?`,
-      () => deleteRecord(record.collaboratorId, record.date)
+      () => deleteRecord(record.collaboratorId, record.date),
+      'Excluir'
     );
   }
 
